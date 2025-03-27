@@ -9,6 +9,7 @@ namespace Centralized_Lost_Found.Models
 {
     public class User
     {
+        // 3-27-2025: RH - User Model for storing user information into the SQLite database
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; } 
 
