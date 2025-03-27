@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Centralized_Lost_Found.Services
 {
-    class placeholder
+    class LocalDDService
     {
     }
 }
