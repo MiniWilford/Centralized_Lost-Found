@@ -25,5 +25,37 @@ namespace Centralized_Lost_Found.Services
 
             
         }
+
+        public async Task CreateUserAsync(User user)
+        {
+            await _connection.InsertAsync(user);
+
+            
+        }
+
+        public async Task <User> GetUserByIDAsync(int id)
+        {
+            return await _connection.Table<User>().Where(u => u.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _connection.Table<User>().Where(u => u.Email == email).FirstOrDefaultAsync();
+        }
+
+        public async Task <List<User>> GetAllUsersAsync()
+        {
+            return await _connection.Table<User>().ToListAsync();
+        }
+
+        public async Task UpdateUserAsync(User user)
+        {
+            await _connection.UpdateAsync(user);
+        }
+        
+        public async Task DeleteUserAsynce (User user)
+        {
+            await _connection.DeleteAsync(user);
+        }   
     }
 }
