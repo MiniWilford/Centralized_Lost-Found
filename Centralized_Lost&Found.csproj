@@ -65,9 +65,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="PostingsPage.xaml.cs">
-	    <DependentUpon>PostingsPage.xaml</DependentUpon>
+	  <Compile Update="Views\AddItem.xaml.cs">
+	    <DependentUpon>AddItem.xaml</DependentUpon>
 	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\AddItem.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
