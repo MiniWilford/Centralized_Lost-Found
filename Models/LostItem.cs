@@ -13,5 +13,6 @@ namespace Centralized_Lost_Found.Models
         public string Location { get; set; }
         public DateTime LastSeenDate { get; set; }
         public string ImagePath { get; set; } // Path to uploaded image
+        public string ReportedBy { get; set; }
     }
 }
