@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Centralized_Lost_Found.Views.ItemProfile"
+             Title="ItemProfile"
+             xmlns:local="clr-namespace:Centralized_Lost_Found.ViewModels">
+    <VerticalStackLayout Padding="20" Spacing="15" HorizontalOptions="Center">
+
+        <!-- Item Image -->
+        <Border WidthRequest="250" HeightRequest="250">
+            <Image Source="{Binding Item.ImagePath}" Aspect="AspectFill"/>
+        </Border>
+
+        <!-- Item Details -->
+        <Label Text="{Binding Item.ItemName}" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center"/>
+        <Label Text="{Binding Item.Description, StringFormat='{0}'}" FontSize="16" HorizontalOptions="Center"/>
+        <Label Text="{Binding Item.Location, StringFormat='Location: {0}'}" FontSize="16" HorizontalOptions="Center"/>
+        <Label Text="{Binding Item.LastSeenDate, StringFormat='Last Seen: {0:MMMM dd, yyyy}'}" FontSize="16" HorizontalOptions="Center"/>
+        <Label Text="{Binding Item.ReportedBy, StringFormat='Reported by: {0}'}" FontSize="16" HorizontalOptions="Center"/>
+
+        <!-- "Found It" Button -->
+        <Button Text="Found It" Command="{Binding FoundItemCommand}" BackgroundColor="Green" TextColor="White"
+            HorizontalOptions="Center" WidthRequest="200"/>
+
+    </VerticalStackLayout>
+</ContentPage>
