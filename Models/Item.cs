@@ -17,6 +17,7 @@ namespace Centralized_Lost_Found.Models
 		public string Name { get; set; }
 		public string Description { get; set; }
 		public bool IsFound { get; set; }
+		public DateTime LastSeenDate { get; set; }
 		public string Uploader { get; set; }
 
 	}
