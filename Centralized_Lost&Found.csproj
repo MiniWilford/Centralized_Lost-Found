@@ -74,9 +74,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="InboxPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Views\AddItem.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
