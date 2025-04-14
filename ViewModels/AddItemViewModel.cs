@@ -1,105 +1,108 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Centralized_Lost_Found.Models;
+using Centralized_Lost_Found.Services;
 
 namespace Centralized_Lost_Found.ViewModels
 {
-    public class AddItemViewModel : INotifyPropertyChanged
-    {
-        private string _itemName { get; set; }
-        private string _description;
-        private string _location;
-        private DateTime _lastSeenDate = DateTime.Today;
-        private string _imagePath;
+	public partial class AddItemViewModel : ObservableObject
+	{
+		private readonly LocalDBService _dbService;
 
-        public string ItemName
-        {
-            get => _itemName;
-            set
-            {
-                if (_itemName != value)
-                {
-                    _itemName = value;
-                    OnPropertyChanged(); // Notify UI of changes
-                }
-            }
-        }
+		// Get/fetch Navigation
+		public INavigation Navigation { get; set; }
 
-        public string Description
-        {
-            get => _description;
-            set { _description = value; OnPropertyChanged(); }
-        }
+		// Item properties
+		[ObservableProperty]
+		private string itemName;
 
-        public string Location
-        {
-            get => _location;
-            set { _location = value; OnPropertyChanged(); }
-        }
+		[ObservableProperty]
+		private string description;
 
-        public DateTime LastSeenDate
-        {
-            get => _lastSeenDate;
-            set { _lastSeenDate = value; OnPropertyChanged(); }
-        }
+		[ObservableProperty]
+		private string location;
 
-        public string ImagePath
-        {
-            get => _imagePath;
-            set { _imagePath = value; OnPropertyChanged(); }
-        }
+		[ObservableProperty]
+		private DateTime lastSeenDate = DateTime.Today;
 
-        public ICommand SubmitCommand { get; }
-        public ICommand CancelCommand { get; }
-        public ICommand UploadImageCommand { get; }
+		[ObservableProperty]
+		private string imagePath;
 
-        public AddItemViewModel()
-        {
-            SubmitCommand = new Command(OnSubmit);
-            CancelCommand = new Command(OnCancel);
-            UploadImageCommand = new Command(OnUploadImage);
-        }
+		// 3) Constructor using DB service to call DB instance.
+		public AddItemViewModel(LocalDBService dbService)
+		{
+			_dbService = dbService;
+		}
 
-        private void OnSubmit()
-        {
-            Application.Current.MainPage.DisplayAlert("Success", "Lost item reported!", "OK");
-        }
+		// "Submit" button.
+		[RelayCommand]
+		private async Task SubmitAsync()
+		{
+			// Create new Item to save.
+			var newItem = new Item
+			{
+				Name = ItemName,
+				Description = Description,
+				Location = Location,
+				LastSeenDate = LastSeenDate,
+				Picture = ImagePath,
+				IsFound = false,
+				Uploader = "Anonymous" // TODO: Fetch user or display anonymous if not logged in
+			};
 
-        private void OnCancel()
-        {
-            Application.Current.MainPage.DisplayAlert("Cancelled", "Lost item reporting cancelled", "OK");
-        }
+			// Save to DB.
+			await _dbService.CreateItemAsync(newItem);
 
-        private async void OnUploadImage()
-        {
-            try
-            {
-                var result = await FilePicker.PickAsync(new PickOptions
-                {
-                    PickerTitle = "Select an Image",
-                    FileTypes = FilePickerFileType.Images
-                });
+			// Show success message.
+			await Application.Current.MainPage.DisplayAlert(
+				"Success",
+				"Lost item reported!",
+				"OK"
+			);
 
-                if (result != null)
-                {
-                    ImagePath = result.FullPath;
-                }
-            }
-            catch (Exception ex)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", $"Failed to open file picker: {ex.Message}", "OK");
-            }
-        }
+			// Navigate back to the PostingsPage (stack navigation).
+			// If you're using Shell, you could do Shell.Current.GoToAsync("//MainPage")
+			await Navigation.PopAsync();
+		}
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
+		// "Cancel" button
+		[RelayCommand]
+		private async Task CancelAsync()
+		{
+			await Application.Current.MainPage.DisplayAlert(
+				"Cancelled",
+				"Lost item reporting cancelled",
+				"OK"
+			);
+			// Return to previous page
+			await Navigation.PopAsync();
+		}
+
+		// pick/upload image
+		[RelayCommand]
+		private async Task UploadImageAsync()
+		{
+			try
+			{
+				var result = await FilePicker.PickAsync(new PickOptions
+				{
+					PickerTitle = "Select an Image",
+					FileTypes = FilePickerFileType.Images
+				});
+
+				if (result != null)
+				{
+					ImagePath = result.FullPath;
+				}
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					$"Failed to open file picker: {ex.Message}",
+					"OK"
+				);
+			}
+		}
+	}
 }

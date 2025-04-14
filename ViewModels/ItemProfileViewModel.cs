@@ -1,52 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Centralized_Lost_Found.Models;
 
 namespace Centralized_Lost_Found.ViewModels
 {
-    public class ItemProfileViewModel : INotifyPropertyChanged
-    {
-        private LostItem _item;
+	public partial class ItemProfileViewModel : ObservableObject
+	{
+		[ObservableProperty]
+		private Item currentItem;
 
-        public LostItem Item
-        {
-            get => _item;
-            set { _item = value; OnPropertyChanged(); }
-        }
+		public ItemProfileViewModel(Item selectedItem)
+		{
+			CurrentItem = selectedItem;
+		}
 
-        public ICommand FoundItemCommand { get; }
+		[RelayCommand]
+		private async Task FoundItemAsync()
+		{
+			bool confirm = await Application.Current.MainPage.DisplayAlert(
+				"Confirm",
+				"Are you sure you found this item?",
+				"Yes", "No");
 
-        public ItemProfileViewModel(LostItem lostItem)
-        {
-            Item = lostItem;
-            FoundItemCommand = new Command(OnItemFound);
-        }
+			if (confirm)
+			{
+				// TODO: Actually remove or update item in DB
+				await Application.Current.MainPage.DisplayAlert(
+					"Success",
+					"Item has been removed from lost items list.",
+					"OK");
 
-        private async void OnItemFound()
-        {
-            bool confirm = await Application.Current.MainPage.DisplayAlert("Confirm",
-                "Are you sure you found this item?", "Yes", "No");
-
-            if (confirm)
-            {
-                // TODO: Implement actual item deletion logic in the backend
-                await Application.Current.MainPage.DisplayAlert("Success", "Item has been removed from lost items list.", "OK");
-
-                // Navigate back (assuming navigation stack)
-                await Application.Current.MainPage.Navigation.PopAsync();
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
+				await Application.Current.MainPage.Navigation.PopAsync();
+			}
+		}
+	}
 }
