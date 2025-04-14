@@ -118,5 +118,22 @@ namespace Centralized_Lost_Found.ViewModels
 			await Navigation.PushAsync(new Views.AddItem());
 		}
 
+		// Command to navigate to UserProfile
+		[RelayCommand]
+		private async Task GoToUserProfilePageAsync() 
+		{
+
+			// Debug 
+			await Application.Current.MainPage.DisplayAlert(
+				"Tapped",
+				"Navigating to user profile...",
+				"OK"
+			);
+
+			// Navigate
+			await Navigation.PushAsync(new UserSignUpPage());
+		}
+
+
 	}
 }

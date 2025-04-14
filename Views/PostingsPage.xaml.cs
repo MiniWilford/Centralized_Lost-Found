@@ -9,6 +9,7 @@ namespace Centralized_Lost_Found.Views
 
 		public PostingsPage()
 		{
+
 			InitializeComponent();
 
 			// Inject the DBService
