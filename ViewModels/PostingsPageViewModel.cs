@@ -131,7 +131,7 @@ namespace Centralized_Lost_Found.ViewModels
 			);
 
 			// Navigate
-			await Navigation.PushAsync(new UserSignUpPage());
+			await Navigation.PushAsync(new Views.UserSignUpPage());
 		}
 
 

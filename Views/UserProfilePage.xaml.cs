@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Centralized_Lost_Found
+namespace Centralized_Lost_Found.Views
 {
         public partial class UserProfilePage : ContentPage
         {

@@ -8,21 +8,29 @@
     <VerticalStackLayout>
 
         <!-- Top header row -->
-        <StackLayout Orientation="Horizontal" HorizontalOptions="End" Spacing="10" Padding="10">
-            <Label Text="Inbox(1)" FontSize="14"/>
-            <Image Source="inbox_icon.png" HeightRequest="20" WidthRequest="20"/>
+        <HorizontalStackLayout
+            Padding="10"
+            Spacing="10"
+            HorizontalOptions="End"
+            VerticalOptions="Start"
+            BackgroundColor="Transparent"
+            Grid.Row="0">
 
-            <!-- Button for username so it is clickable -->
+            <Label Text="Inbox(1)" FontSize="14" />
+            <Image Source="inbox_icon.png" HeightRequest="20" WidthRequest="20" />
+
+            <!-- Use a button to ensure full clickability -->
             <Button Text="Username"
-                Command="{Binding GoToUserProfilePageAsyncCommand}"
-                BackgroundColor="Transparent"
-                TextColor="LightBlue"
-                Padding="0"
-                FontSize="14"
-                BorderWidth="0" />
+                    FontSize="14"
+                    BackgroundColor="Transparent"
+                    TextColor="LightBlue"
+                    Padding="0"
+                    BorderWidth="0"
+                    Command="{Binding GoToUserProfilePageAsyncCommand}" />
 
-            <Image Source="profile_icon.png" HeightRequest="30" WidthRequest="30"/>
-        </StackLayout>
+            <Image Source="profile_icon.png" HeightRequest="30" WidthRequest="30" />
+        </HorizontalStackLayout>
+
 
         <!-- Grid -->
         <Grid Padding="10">
