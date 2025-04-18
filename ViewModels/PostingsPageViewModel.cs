@@ -16,8 +16,10 @@ namespace Centralized_Lost_Found.ViewModels
 		// Fetch/Set Navigation (enables push/pop functionality from VM)
 		public INavigation Navigation { get; set; }
 
+		// List of all Items (not filtered)
+		private List<Item> _allItems = [];
 
-		// Track property change of items
+		// Track property changes of items (filtered)
 		[ObservableProperty]
 		private ObservableCollection<Item> items;
 		
@@ -30,13 +32,14 @@ namespace Centralized_Lost_Found.ViewModels
 		private bool isRefreshing;
 
 
-		// Create list of locations
+		// Create collection of locations
 		[ObservableProperty]
-		private ObservableCollection<string> locations = new();
+		private ObservableCollection<string> locations = [];
 
 		// selected location by user
 		[ObservableProperty]
 		private string selectedLocation;
+
 
 
 		// Constructor to initialize DB service and fetch items
@@ -45,6 +48,36 @@ namespace Centralized_Lost_Found.ViewModels
 			_dbService = dbService;
 			Items = new ObservableCollection<Item>();
 		}
+
+		private void ShowFilteredItems(IEnumerable<Item> itemsFiltered)
+		{
+			// Clear filtered item collection and return 
+			Items.Clear();
+			foreach (var item in itemsFiltered)
+			{
+				Items.Add(item);
+			}
+		}
+
+
+
+		// Filter Location (when selected by user)
+		partial void OnSelectedLocationChanged(string location)
+		{
+			// No Location selected
+			if(string.IsNullOrWhiteSpace(location) || location == "All Locations")
+			{
+				ShowFilteredItems(_allItems); // Display all items normally
+				return; 
+			}
+
+			// Location selected (now get filtered items and remove non-matching locations)
+			var filteredItems = _allItems.Where(item => item.Location == location).ToList();
+			ShowFilteredItems(filteredItems);
+
+		}
+
+
 
 		// Refresh items command
 		[RelayCommand]
@@ -64,18 +97,13 @@ namespace Centralized_Lost_Found.ViewModels
 				IsRefreshing = true;
 
 				// Fetch items from DB
-				var lostItemsList = await _dbService.GetAllItemsAsync();
+				_allItems = await _dbService.GetAllItemsAsync(); // Get all items
 
 				// Clear existing contents and show updated lost items
-				Items.Clear();
-				foreach (var lostItem in lostItemsList)
-				{
-					Items.Add(lostItem);
-				}
-
+				ShowFilteredItems(_allItems);
 
 				// Get locations for the user to select
-				var uniqueItemLocations = items
+				var uniqueItemLocations = _allItems
 					.Select(item => item.Location)
 					.Where(loc => !string.IsNullOrWhiteSpace(loc))
 					.Distinct()
@@ -83,8 +111,12 @@ namespace Centralized_Lost_Found.ViewModels
 					.ToList();
 
 				Locations.Clear();
+				Locations.Add("All Locations");  // Display locations
 				foreach (var location in uniqueItemLocations)
 					Locations.Add(location);
+
+				// Make SelectedLocation default to All Locations
+				SelectedLocation = "All Locations";
 			}
 			catch (Exception ex)
 			{
@@ -96,6 +128,7 @@ namespace Centralized_Lost_Found.ViewModels
 				IsRefreshing = false;
 			}
 		}
+
 
 		// Tap an item to view details of lost item
 		[RelayCommand]
@@ -111,12 +144,14 @@ namespace Centralized_Lost_Found.ViewModels
 			await Navigation.PushAsync(new ItemProfile(selectedItem));
 		}
 
+
 		// Command to navigate to AddItem page
 		[RelayCommand]
 		private async Task GoToAddItemPageAsync() 
 		{
 			await Navigation.PushAsync(new Views.AddItem());
 		}
+
 
 		// Command to navigate to UserProfile
 		[RelayCommand]
