@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Centralized_Lost_Found.ViewModels"
+             x:Class="Centralized_Lost_Found.Views.PostingsPage"
+             NavigationPage.HasNavigationBar="False">
+
+    <!-- Page Content -->
+    <VerticalStackLayout Spacing="0">
+
+        <!-- Header Contents -->
+        <Grid ColumnDefinitions="*,Auto"
+              Padding="10"
+              VerticalOptions="Center"
+              BackgroundColor="Transparent">
+
+            <!-- Page Title -->
+            <Label Text="Lost Items"
+                FontSize="18"
+                FontAttributes="Bold"
+                HorizontalOptions="Start"
+                VerticalOptions="Center"/>
+
+            <!-- Navigation + Images -->
+            <HorizontalStackLayout Grid.Column="1"
+                                   Spacing="8"
+                                   HorizontalOptions="End"
+                                   VerticalOptions="Center">
+
+                <!-- Inbox -->
+                <Label Text="Inbox(1)" FontSize="12" VerticalOptions="Center"/>
+
+                <!-- Inbox Icon -->
+                <Image Source="inbox_icon.png"
+                   WidthRequest="18" HeightRequest="18"
+                   VerticalOptions="Center"/>
+
+                <!-- Username (clickable) -->
+                <Button Text="Username"
+                    FontSize="12"
+                    TextColor="LightBlue"
+                    BackgroundColor="Transparent"
+                    Padding="0"
+                    BorderWidth="0"
+                    Command="{Binding GoToUserProfilePageCommand}"
+                    VerticalOptions="Center"/>
+
+                <!-- Username Icon -->
+                <Image Source="profile_icon.png"
+                   WidthRequest="24" HeightRequest="24"
+                   VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+        </Grid>
+
+
+        <!-- Main Page Content -->
+        <VerticalStackLayout Padding="10">
+
+            <!-- Grid -->
+            <Grid Padding="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Add Item button -->
+                <Button Text="Don't see yours?: Add/+"
+                BackgroundColor="Red"
+                TextColor="White"
+                Grid.Row="0"
+                HorizontalOptions="Center"
+                Command="{Binding GoToAddItemPageCommand}" />
+
+                <!-- Filter location dropdown -->
+                <Picker Title="Filter Locations Dropdown"
+                ItemsSource="{Binding Locations}"
+                SelectedItem="{Binding SelectedLocation}"
+                Grid.Row="1"
+                HorizontalOptions="Center"
+                WidthRequest="200" />
+
+                <!-- Refresh contents and display items -->
+                <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}"
+                     Grid.Row="2">
+                    <CollectionView ItemsSource="{Binding Items}"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedItem}"
+                            SelectionChangedCommand="{Binding ItemSelectedCommand}"
+                            SelectionChangedCommandParameter="{Binding SelectedItem}">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" Span="3" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Stroke="Gray" StrokeThickness="1" Padding="10">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="5"/>
+                                    </Border.StrokeShape>
+                                    <Image Source="{Binding Picture}"
+                                   HeightRequest="100" WidthRequest="150"/>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </RefreshView>
+            </Grid>
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>
+
