@@ -3,35 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:Centralized_Lost_Found.ViewModels"
              x:Class="Centralized_Lost_Found.Views.PostingsPage"
-             Title="Lost Item Postings">
-
-    <VerticalStackLayout>
-
-        <!-- Top header row -->
-        <HorizontalStackLayout
-            Padding="10"
-            Spacing="10"
-            HorizontalOptions="End"
-            VerticalOptions="Start"
-            BackgroundColor="Transparent"
-            Grid.Row="0">
-
-            <Label Text="Inbox(1)" FontSize="14" />
-            <Image Source="inbox_icon.png" HeightRequest="20" WidthRequest="20" />
-
-            <!-- Use a button to ensure full clickability -->
-            <Button Text="Username"
-                    FontSize="14"
-                    BackgroundColor="Transparent"
-                    TextColor="LightBlue"
-                    Padding="0"
-                    BorderWidth="0"
-                    Command="{Binding GoToUserProfilePageAsyncCommand}" />
-
-            <Image Source="profile_icon.png" HeightRequest="30" WidthRequest="30" />
-        </HorizontalStackLayout>
+             Title="Lost Items">
 
 
+    <!-- Header Contents (prevent overlap in main page content) -->
+    <!-- Icon's size should be 24x24 or 32x32 -->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Inbox(1)"
+                     IconImageSource="inbox_icon.png"
+                     Command="{Binding GoToInboxCommand}" />
+
+        <ToolbarItem Text="Username"
+                     Order="Primary"
+                     IconImageSource="profile_icon.png"
+                     Command="{Binding GoToUserProfilePageCommand}" />
+    </ContentPage.ToolbarItems>
+
+
+    <!-- Main Page Content -->
+    <VerticalStackLayout Padding="10">
+        
         <!-- Grid -->
         <Grid Padding="10">
             <Grid.RowDefinitions>

@@ -157,13 +157,13 @@ namespace Centralized_Lost_Found.ViewModels
 		[RelayCommand]
 		private async Task GoToUserProfilePageAsync() 
 		{
+			// Ensure can navigate first
+			if(Navigation == null)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", "Navigation not set", "OK");
+				return;
+			}
 
-			// Debug 
-			await Application.Current.MainPage.DisplayAlert(
-				"Tapped",
-				"Navigating to user profile...",
-				"OK"
-			);
 
 			// Navigate
 			await Navigation.PushAsync(new Views.UserSignUpPage());

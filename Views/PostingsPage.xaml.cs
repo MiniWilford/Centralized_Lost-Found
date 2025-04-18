@@ -9,23 +9,21 @@ namespace Centralized_Lost_Found.Views
 
 		public PostingsPage()
 		{
-
 			// Inject the DBService
 			var dbService = App.Current.Handler.MauiContext.Services.GetService<LocalDBService>();
 
 			// Create viewmodel with DBService
 			_viewModel = new PostingsPageViewModel(dbService);
 
-			// Setup navigation
-			_viewModel.Navigation = this.Navigation;
-
 			// Bind viewmodel
 			BindingContext = _viewModel;
 
 			// Run frontend
 			InitializeComponent();
-
 			
+			// Setup navigation
+			_viewModel.Navigation = this.Navigation;
+
 		}
 
 		// Refresh page on visit to ensure new items are listed after posting
