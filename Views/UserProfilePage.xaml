@@ -38,6 +38,7 @@
 
         <!-- Buttons -->
         <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
+            <Button Text="Add Warning" BackgroundColor="OrangeRed" TextColor="White" WidthRequest="200" Command="{Binding IncreaseWarningCommand}" /> <!-- TODO: Remove After Testing Warning Functionality -->
             <Button Text="Go Back" BackgroundColor="Red" TextColor="White" WidthRequest="120" Command="{Binding GoBackCommand}" />
             <Button Text="Submit" BackgroundColor="Green" TextColor="White" WidthRequest="120" Command="{Binding SaveProfileCommand}" />
         </HorizontalStackLayout>

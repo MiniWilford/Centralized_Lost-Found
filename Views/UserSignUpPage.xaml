@@ -26,6 +26,8 @@
         <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
             <Button Text="Go Back" BackgroundColor="Red" TextColor="White" WidthRequest="120" Command="{Binding GoBackCommand}" />
             <Button Text="Submit" BackgroundColor="Green" TextColor="White" WidthRequest="120" Command="{Binding SubmitCommand}" />
+            <Button Text="Already have an account? Sign In" BackgroundColor="Gray" TextColor="White" WidthRequest="240" Command="{Binding GoToSignInPageCommand}" />
+
         </HorizontalStackLayout>
 
     </VerticalStackLayout>

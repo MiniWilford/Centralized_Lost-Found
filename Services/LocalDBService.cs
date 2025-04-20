@@ -15,6 +15,8 @@ namespace Centralized_Lost_Found.Services
 
         private readonly SQLiteAsyncConnection _connection;
 
+        public static User CurrentUser; // Maintain user session over the app from DB
+
         public LocalDBService() 
         {
             _connection = new SQLiteAsyncConnection(Path.Combine(FileSystem.AppDataDirectory, DB_NAME));

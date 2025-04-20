@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Centralized_Lost_Found.Models;
 using Centralized_Lost_Found.Services;
+using Centralized_Lost_Found.Views;
 
 namespace Centralized_Lost_Found.ViewModels
 {
@@ -32,7 +33,6 @@ namespace Centralized_Lost_Found.ViewModels
 		[RelayCommand]
 		private async Task SubmitAsync()
 		{
-			// Validation checks
 			if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(ConfirmPassword))
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", "All fields are required.", "OK");
@@ -45,27 +45,54 @@ namespace Centralized_Lost_Found.ViewModels
 				return;
 			}
 
-			// Create new user object
 			var newUser = new User
 			{
-				Avatar = "profile_placeholder.png", // Default avatar
+				Avatar = "profile_placeholder.png",
 				Password = Password,
-				Email = "", // Empty for now, could add later
+				Email = Username, // Correctly assign username
 				Location = "",
 				ReportedItems = 0,
 				Warnings = 0
 			};
 
-			// Save user to db
 			await _dbService.CreateUserAsync(newUser);
 
-			// Display user friendly feedback on success
+			// Set logged-in user
+			LocalDBService.CurrentUser = newUser;
+
+			// Success Feedback to user 
 			await Application.Current.MainPage.DisplayAlert("Success", "User created successfully!", "OK");
 
-			// Navigate back
+			// Navigate back to postings page
 			if (Navigation != null)
+			{
 				await Navigation.PopAsync();
+
+				// After navigating back, force PostingsPage to reload header
+				if (Application.Current.MainPage.Navigation.NavigationStack.LastOrDefault() is PostingsPage postingsPage)
+				{
+					var postingsViewModel = postingsPage.BindingContext as PostingsPageViewModel;
+					if (postingsViewModel != null)
+					{
+						await postingsViewModel.LoadUserHeaderAsync();
+					}
+				}
+			}
 		}
+
+
+
+		// Sign-In Page button
+		[RelayCommand]
+		private async Task GoToSignInPageAsync()
+		{
+			if (Navigation != null)
+			{
+				await Navigation.PushAsync(new Views.UserSignInPage());
+			}
+		}
+
+
 
 		// Go Back button
 		[RelayCommand]

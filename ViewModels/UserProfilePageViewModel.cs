@@ -34,9 +34,18 @@ namespace Centralized_Lost_Found.ViewModels
 		private User _currentUser;
 
 		// Constructor injects DB Service
-		public UserProfilePageViewModel(LocalDBService dbService)
+		public UserProfilePageViewModel(LocalDBService dbService, User user)
 		{
 			_dbService = dbService;
+			_currentUser = user;
+
+
+			// Initialize user fields from user logged in
+			Username = user.Email;
+			Password = user.Password;
+			ReportedItems = user.ReportedItems;
+			Location = user.Location;
+			Warnings = user.Warnings;
 		}
 
 		// Load current user profile
@@ -93,5 +102,40 @@ namespace Centralized_Lost_Found.ViewModels
 			if (Navigation != null)
 				await Navigation.PopAsync();
 		}
+
+
+		// Increase user warnings for posting moderation
+		[RelayCommand]
+		public async Task IncreaseWarningAsync()
+		{
+			if (_currentUser == null)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", "User not loaded.", "OK");
+				return;
+			}
+
+			_currentUser.Warnings += 1; // Increase warning by 1
+
+			// Save to the database
+			await _dbService.UpdateUserAsync(_currentUser);
+
+			// Update the displayed Warnings count for user
+			Warnings = _currentUser.Warnings;
+
+			// Check if warnings hit 3 (or higher)
+			if (_currentUser.Warnings >= 3)
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Account Termination",
+					"You have received 3 warnings. Your account is now restricted.",
+					"OK"
+				);
+
+				// TODO: Add extra logic here, like disabling posting or deleting the user account.
+			}
+		}
+
+
+
 	}
 }
