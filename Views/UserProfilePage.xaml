@@ -12,34 +12,34 @@
 
         <Label Text="User Profile" FontSize="18" HorizontalOptions="Center"/>
 
-        <!-- Warnings Section -->
+        <!-- User Warnings -->
         <HorizontalStackLayout HorizontalOptions="Center">
             <Label Text="Warnings:" FontSize="14"/>
             <Frame BackgroundColor="Orange" Padding="5" CornerRadius="5">
-                <Label Text="User Spam (+1)" FontSize="14" TextColor="White"/>
+                <Label Text="{Binding Warnings}" FontSize="14" TextColor="White"/>
             </Frame>
         </HorizontalStackLayout>
 
         <!-- User Details Form -->
         <Label Text="Username:" FontSize="14"/>
-        <Entry Placeholder="Enter username"/>
+        <Entry Placeholder="Enter username" Text="{Binding Username}" />
 
         <Label Text="Password:" FontSize="14"/>
-        <Entry Placeholder="Enter password" IsPassword="True"/>
+        <Entry Placeholder="Enter password" IsPassword="True" Text="{Binding Password}" />
 
         <Label Text="New Password:" FontSize="14"/>
-        <Entry Placeholder="Enter new password" IsPassword="True"/>
+        <Entry Placeholder="Enter new password" IsPassword="True" Text="{Binding NewPassword}" />
 
         <Label Text="Items Reported:" FontSize="14"/>
-        <Entry Placeholder="Number of items reported" Keyboard="Numeric"/>
+        <Entry Placeholder="Items reported" Text="{Binding ReportedItems}" IsReadOnly="True" Keyboard="Numeric"/>
 
         <Label Text="Location:" FontSize="14"/>
-        <Entry Placeholder="Enter location"/>
+        <Entry Placeholder="Enter location" Text="{Binding Location}" />
 
         <!-- Buttons -->
         <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
-            <Button Text="Go Back" BackgroundColor="Red" TextColor="White" WidthRequest="120"/>
-            <Button Text="Submit" BackgroundColor="Green" TextColor="White" WidthRequest="120"/>
+            <Button Text="Go Back" BackgroundColor="Red" TextColor="White" WidthRequest="120" Command="{Binding GoBackCommand}" />
+            <Button Text="Submit" BackgroundColor="Green" TextColor="White" WidthRequest="120" Command="{Binding SaveProfileCommand}" />
         </HorizontalStackLayout>
 
     </VerticalStackLayout>
