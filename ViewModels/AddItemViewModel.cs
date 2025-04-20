@@ -61,7 +61,6 @@ namespace Centralized_Lost_Found.ViewModels
 			);
 
 			// Navigate back to the PostingsPage (stack navigation).
-			// If you're using Shell, you could do Shell.Current.GoToAsync("//MainPage")
 			await Navigation.PopAsync();
 		}
 

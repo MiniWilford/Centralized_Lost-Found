@@ -14,18 +14,18 @@
 
         <!-- Signup Form -->
         <Label Text="Username:" FontSize="14"/>
-        <Entry Placeholder="Enter username"/>
+        <Entry Placeholder="Enter username" Text="{Binding Username}" />
 
         <Label Text="Password:" FontSize="14"/>
-        <Entry Placeholder="Enter password" IsPassword="True"/>
+        <Entry Placeholder="Enter password" IsPassword="True" Text="{Binding Password}" />
 
         <Label Text="Confirm Password:" FontSize="14"/>
-        <Entry Placeholder="Confirm password" IsPassword="True"/>
+        <Entry Placeholder="Confirm password" IsPassword="True" Text="{Binding ConfirmPassword}" />
 
         <!-- Buttons -->
         <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
-            <Button Text="Go Back" BackgroundColor="Red" TextColor="White" WidthRequest="120"/>
-            <Button Text="Submit" BackgroundColor="Green" TextColor="White" WidthRequest="120"/>
+            <Button Text="Go Back" BackgroundColor="Red" TextColor="White" WidthRequest="120" Command="{Binding GoBackCommand}" />
+            <Button Text="Submit" BackgroundColor="Green" TextColor="White" WidthRequest="120" Command="{Binding SubmitCommand}" />
         </HorizontalStackLayout>
 
     </VerticalStackLayout>
