@@ -27,24 +27,23 @@
 
         <!-- User Details Form -->
         <Label Text="Username:" FontSize="14"/>
-        <Entry Text="{Binding Username}" IsReadOnly="{Binding IsBeingEdited}" Placeholder="Enter your username: " />
+        <Entry Text="{Binding Username}" Placeholder="Enter your username: " IsReadOnly="{Binding IsNotBeingEdited}" Keyboard="Default" />
 
         <Label Text="Password:" FontSize="14"/>
-        <Entry Placeholder="Enter password" IsPassword="True" Text="{Binding Password}"  IsReadOnly="{Binding IsBeingEdited}" />
+        <Entry Placeholder="Enter password" IsPassword="True" Text="{Binding Password}"  IsReadOnly="{Binding IsNotBeingEdited}" Keyboard="Text" />
 
         <Label Text="New Password:" FontSize="14"/>
-        <Entry Placeholder="Enter new password" IsPassword="True" Text="{Binding NewPassword}"  IsReadOnly="{Binding IsBeingEdited}" />
+        <Entry Placeholder="Enter new password" IsPassword="True" Text="{Binding NewPassword}"  IsReadOnly="{Binding IsNotBeingEdited}" Keyboard="Text" />
 
         <Label Text="Items Reported:" FontSize="14"/>
         <Entry Placeholder="Items reported" Text="{Binding ReportedItems}" IsReadOnly="True" Keyboard="Numeric"/>
 
         <Label Text="Location:" FontSize="14"/>
-        <Entry Placeholder="Enter location" Text="{Binding Location}"  IsReadOnly="{Binding IsBeingEdited}" />
+        <Entry Placeholder="Enter location" Text="{Binding Location}"  IsReadOnly="{Binding IsNotBeingEdited}" Keyboard="Text" />
 
         <!-- Buttons -->
         <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
-            <Button Text="Add Warning" BackgroundColor="OrangeRed" TextColor="White" WidthRequest="200" Command="{Binding IncreaseWarningCommand}" /> <!-- TODO: Remove After Testing Warning Functionality -->
-            <Button Text="Edit" Command="{Binding ToggleEditingCommand}" BackgroundColor="Orange" TextColor="White" HorizontalOptions="Center" />
+            <Button Text="Edit" BackgroundColor="Orange" TextColor="White" HorizontalOptions="Center" Command="{Binding ToggleProfileEditingStateCommand}" />
             <Button Text="Go Back" BackgroundColor="Red" TextColor="White" WidthRequest="120" Command="{Binding GoBackCommand}" />
             <Button Text="Submit" BackgroundColor="Green" TextColor="White" WidthRequest="120" Command="{Binding SaveProfileCommand}" />
         </HorizontalStackLayout>

@@ -200,6 +200,19 @@ namespace Centralized_Lost_Found.ViewModels
 		[RelayCommand]
 		private async Task GoToAddItemPageAsync()
 		{
+			// Check if user logged in and is terminated (3+ warnings)
+			if (LocalDBService.CurrentUser?.AccountTerminated == true)
+			{
+				// Prevent user from posting new lost items
+				await Application.Current.MainPage.DisplayAlert(
+					"Restricted",
+					"You cannot post new items because your account has been restricted.",
+					"OK"
+				);
+				return;
+			}
+
+			// Continue to adding new lost item (if valid user)
 			await Navigation.PushAsync(new Views.AddItem());
 		}
 

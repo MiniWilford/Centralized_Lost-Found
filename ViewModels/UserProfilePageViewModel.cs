@@ -44,9 +44,17 @@ namespace Centralized_Lost_Found.ViewModels
 		private User _currentUser;
 
 
-		// Track if user profile is being edited
+		// Track if user profile is being edited (defaults to false)
 		[ObservableProperty]
-		private bool isBeingEdited;
+		private bool isBeingEdited = false;
+
+		public bool IsNotBeingEdited // Needed for tracking changes (ensures locking/unlocking)
+		{
+			get
+			{
+				return !IsBeingEdited;
+			}
+		}
 
 
 		// Constructor injects DB Service
@@ -89,23 +97,24 @@ namespace Centralized_Lost_Found.ViewModels
 		{
 			try
 			{
-				var result = await FilePicker.PickAsync(new PickOptions
+				var file = await FilePicker.PickAsync(new PickOptions
 				{
 					PickerTitle = "Select a Profile Picture",
 					FileTypes = FilePickerFileType.Images
 				});
 
-				if (result != null)
+				if (file != null)
 				{
 					// Update the Avatar property
-					UserAvatar = result.FullPath;
+					UserAvatar = file.FullPath;
 
 					if (_currentUser != null)
 					{
-						_currentUser.Avatar = result.FullPath;
+						_currentUser.Avatar = file.FullPath;
 						await _dbService.UpdateUserAsync(_currentUser);
 					}
 
+					// Alert to user to success
 					await Application.Current.MainPage.DisplayAlert("Success", "Avatar updated!", "OK");
 				}
 			}
@@ -134,6 +143,7 @@ namespace Centralized_Lost_Found.ViewModels
 			{
 				_currentUser.Email = Username; // Change to new username
 			}
+
 			if (string.IsNullOrWhiteSpace(NewPassword))
 			{
 				_currentUser.Password = Password;  // Keep old
@@ -157,6 +167,10 @@ namespace Centralized_Lost_Found.ViewModels
 			await Application.Current.MainPage.DisplayAlert("Success", "Profile updated successfully.", "OK");
 
 
+			// Turn off editing of fields on profile page
+			IsBeingEdited = false;
+
+
 			// Go back if needed
 			if (Navigation != null)
 				await Navigation.PopAsync();
@@ -168,6 +182,14 @@ namespace Centralized_Lost_Found.ViewModels
 		[RelayCommand]
 		private async Task GoBackAsync()
 		{
+
+			if (IsBeingEdited == true)
+			{
+				// Disable fields in case user forgot they were editing
+				IsBeingEdited = false;
+			}
+			
+			// Go to previous page
 			if (Navigation != null)
 				await Navigation.PopAsync();
 		}
@@ -177,6 +199,7 @@ namespace Centralized_Lost_Found.ViewModels
 		private void ToggleProfileEditingState()
 		{
 			IsBeingEdited = !IsBeingEdited; // Invert current state on click
+			OnPropertyChanged(nameof(IsNotBeingEdited)); // Change UI to reflect editing state
 		}
 
 
@@ -198,16 +221,22 @@ namespace Centralized_Lost_Found.ViewModels
 			// Update the displayed Warnings count for user
 			Warnings = _currentUser.Warnings;
 
-			// Check if warnings hit 3 (or higher)
-			if (_currentUser.Warnings >= 3)
+			// Check if warnings hit 3 (or higher) for account termination
+			if (_currentUser.Warnings >= 3 && !_currentUser.AccountTerminated)
 			{
+				_currentUser.AccountTerminated = true;
 				await Application.Current.MainPage.DisplayAlert(
 					"Account Termination",
 					"You have received 3 warnings. Your account is now restricted.",
 					"OK"
 				);
 
-				// TODO: Add extra logic here, like disabling posting or deleting the user account.
+				// Save warnings + user termination if met
+				await _dbService.UpdateUserAsync(_currentUser);
+				LocalDBService.CurrentUser = _currentUser;
+
+				// Refresh display
+				Warnings = _currentUser.Warnings;
 			}
 		}
 
@@ -230,7 +259,6 @@ namespace Centralized_Lost_Found.ViewModels
 			ReportedItems = _currentUser.ReportedItems;
 			Warnings = _currentUser.Warnings;
 		}
-
 
 
 	}

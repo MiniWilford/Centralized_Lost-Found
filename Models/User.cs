@@ -25,6 +25,8 @@ namespace Centralized_Lost_Found.Models
 
         public int Warnings { get; set; }
 
+        public bool AccountTerminated { get; set; }  // KD - Add for helping in post moderation (delete account if becomes true)
+
     }
 
     

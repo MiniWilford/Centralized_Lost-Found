@@ -38,6 +38,56 @@ namespace Centralized_Lost_Found.ViewModels
 		[RelayCommand]
 		private async Task SubmitAsync()
 		{
+			// Validate posting is not missing important components. 
+			if (string.IsNullOrWhiteSpace(ItemName) || string.IsNullOrWhiteSpace(Location) || string.IsNullOrWhiteSpace(ImagePath))
+			{
+				// Check current user
+				if (LocalDBService.CurrentUser != null)
+				{
+					// Add warning if logged in
+					LocalDBService.CurrentUser.Warnings += 1;
+
+					// Check if user should now be terminated
+					if (LocalDBService.CurrentUser.Warnings >= 3 && !LocalDBService.CurrentUser.AccountTerminated)
+					{
+						// Terminate account
+						LocalDBService.CurrentUser.AccountTerminated = true;
+
+						// Alert to termination
+						await Application.Current.MainPage.DisplayAlert(
+							"Account Termination",
+							"Due to repeated incomplete postings, your account is now restricted.",
+							"OK"
+						);
+					}
+
+					// Save warning
+					var dbService = App.Current.Handler.MauiContext.Services.GetService<LocalDBService>();
+					await dbService.UpdateUserAsync(LocalDBService.CurrentUser);
+				}
+
+				// Warn user of invalid posting
+				await Application.Current.MainPage.DisplayAlert(
+					"Incomplete Posting",
+					"Please provide an Item Name, Location, and Picture before submitting.",
+					"OK"
+				);
+				return; // Prevent bad item posting
+			}
+
+
+			// Check user session for name to display on new item posting
+			string nameToDisplay;
+			if (LocalDBService.CurrentUser != null && LocalDBService.CurrentUser.Email != null)
+			{
+				nameToDisplay = LocalDBService.CurrentUser.Email;
+			}
+			else
+			{
+				nameToDisplay = "Guest User";
+			}
+
+
 			// Create new Item to save.
 			var newItem = new Item
 			{
@@ -47,7 +97,7 @@ namespace Centralized_Lost_Found.ViewModels
 				LastSeenDate = LastSeenDate,
 				Picture = ImagePath,
 				IsFound = false,
-				Uploader = "Anonymous" // TODO: Fetch user or display anonymous if not logged in
+				Uploader = nameToDisplay
 			};
 
 			// Save to DB.

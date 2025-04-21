@@ -27,14 +27,8 @@ namespace Centralized_Lost_Found.Views
 
 		protected override async void OnAppearing()
 		{
+			// Display contents
 			base.OnAppearing();
-
-			// TODO: Check if this code is still necessary vvv
-
-			//if (_viewModel != null)
-			//{
-			//	await _viewModel.LoadUserProfileAsync();
-			//}
 		}
 	}
 }
