@@ -20,5 +20,6 @@ namespace Centralized_Lost_Found.Models
 		public DateTime LastSeenDate { get; set; }
 		public string Uploader { get; set; }
 
+		public string FoundByUser { get; set; }
 	}
 }
