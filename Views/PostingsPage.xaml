@@ -32,23 +32,26 @@
 
                 <!-- Inbox Icon -->
                 <Image Source="inbox_icon.png"
-                   WidthRequest="18" HeightRequest="18"
-                   VerticalOptions="Center"/>
+                       WidthRequest="18" HeightRequest="18"
+                       VerticalOptions="Center"/>
 
                 <!-- Username (clickable) -->
-                <Button Text="Username"
-                    FontSize="12"
-                    TextColor="LightBlue"
-                    BackgroundColor="Transparent"
-                    Padding="0"
-                    BorderWidth="0"
-                    Command="{Binding GoToUserProfilePageCommand}"
-                    VerticalOptions="Center"/>
+                <Button Text="{Binding Username}"
+                        FontSize="12"
+                        TextColor="LightYellow"
+                        BackgroundColor="Transparent"
+                        Padding="0"
+                        BorderWidth="0"
+                        Command="{Binding GoToUserProfilePageCommand}"
+                        VerticalOptions="Center"/>
 
                 <!-- Username Icon -->
-                <Image Source="profile_icon.png"
-                   WidthRequest="24" HeightRequest="24"
-                   VerticalOptions="Center"/>
+                <Image Source="{Binding Avatar}"
+                       WidthRequest="24" 
+                       HeightRequest="24"
+                       VerticalOptions="Center"/>
+
+
             </HorizontalStackLayout>
         </Grid>
 

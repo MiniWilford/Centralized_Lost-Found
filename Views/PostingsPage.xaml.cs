@@ -33,6 +33,7 @@ namespace Centralized_Lost_Found.Views
 
 			if (_viewModel != null)
 			{
+				await _viewModel.LoadUserHeaderAsync(); // Load user details at top of page
 				await _viewModel.RefreshAsync();  // Refresh page
 			}
 		}

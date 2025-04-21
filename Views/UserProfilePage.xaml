@@ -7,39 +7,45 @@
 
         <!-- Profile Image -->
         <Frame HeightRequest="80" WidthRequest="80" CornerRadius="40" BorderColor="Gray" HorizontalOptions="Center">
-            <Image Source="profile_placeholder.png" HeightRequest="80" WidthRequest="80"/>
+            <Image Source="{Binding UserAvatar}" HeightRequest="80" WidthRequest="80">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding UploadUserAvatarCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
         </Frame>
+
 
         <Label Text="User Profile" FontSize="18" HorizontalOptions="Center"/>
 
-        <!-- Warnings Section -->
+        <!-- User Warnings -->
         <HorizontalStackLayout HorizontalOptions="Center">
             <Label Text="Warnings:" FontSize="14"/>
             <Frame BackgroundColor="Orange" Padding="5" CornerRadius="5">
-                <Label Text="User Spam (+1)" FontSize="14" TextColor="White"/>
+                <Label Text="{Binding Warnings}" FontSize="14" TextColor="White"/>
             </Frame>
         </HorizontalStackLayout>
 
         <!-- User Details Form -->
         <Label Text="Username:" FontSize="14"/>
-        <Entry Placeholder="Enter username"/>
+        <Entry Text="{Binding Username}" Placeholder="Enter your username: " IsReadOnly="{Binding IsNotBeingEdited}" Keyboard="Default" />
 
         <Label Text="Password:" FontSize="14"/>
-        <Entry Placeholder="Enter password" IsPassword="True"/>
+        <Entry Placeholder="Enter password" IsPassword="True" Text="{Binding Password}"  IsReadOnly="{Binding IsNotBeingEdited}" Keyboard="Text" />
 
         <Label Text="New Password:" FontSize="14"/>
-        <Entry Placeholder="Enter new password" IsPassword="True"/>
+        <Entry Placeholder="Enter new password" IsPassword="True" Text="{Binding NewPassword}"  IsReadOnly="{Binding IsNotBeingEdited}" Keyboard="Text" />
 
         <Label Text="Items Reported:" FontSize="14"/>
-        <Entry Placeholder="Number of items reported" Keyboard="Numeric"/>
+        <Entry Placeholder="Items reported" Text="{Binding ReportedItems}" IsReadOnly="True" Keyboard="Numeric"/>
 
         <Label Text="Location:" FontSize="14"/>
-        <Entry Placeholder="Enter location"/>
+        <Entry Placeholder="Enter location" Text="{Binding Location}"  IsReadOnly="{Binding IsNotBeingEdited}" Keyboard="Text" />
 
         <!-- Buttons -->
         <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
-            <Button Text="Go Back" BackgroundColor="Red" TextColor="White" WidthRequest="120"/>
-            <Button Text="Submit" BackgroundColor="Green" TextColor="White" WidthRequest="120"/>
+            <Button Text="Edit" BackgroundColor="Orange" TextColor="White" HorizontalOptions="Center" Command="{Binding ToggleProfileEditingStateCommand}" />
+            <Button Text="Go Back" BackgroundColor="Red" TextColor="White" WidthRequest="120" Command="{Binding GoBackCommand}" />
+            <Button Text="Submit" BackgroundColor="Green" TextColor="White" WidthRequest="120" Command="{Binding SaveProfileCommand}" />
         </HorizontalStackLayout>
 
     </VerticalStackLayout>

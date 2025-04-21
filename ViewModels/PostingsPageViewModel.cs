@@ -22,7 +22,7 @@ namespace Centralized_Lost_Found.ViewModels
 		// Track property changes of items (filtered)
 		[ObservableProperty]
 		private ObservableCollection<Item> items;
-		
+
 		// Track selected/tapped item
 		[ObservableProperty]
 		private Item selectedItem;
@@ -41,6 +41,11 @@ namespace Centralized_Lost_Found.ViewModels
 		private string selectedLocation;
 
 
+		[ObservableProperty]
+		private string username = "Guest User"; // Default name if not logged in
+
+		[ObservableProperty]
+		private string avatar = "profile_placeholder.png"; // Default profile icon
 
 		// Constructor to initialize DB service and fetch items
 		public PostingsPageViewModel(LocalDBService dbService)
@@ -49,6 +54,7 @@ namespace Centralized_Lost_Found.ViewModels
 			Items = new ObservableCollection<Item>();
 		}
 
+		// Display filtered collection items
 		private void ShowFilteredItems(IEnumerable<Item> itemsFiltered)
 		{
 			// Clear filtered item collection and return 
@@ -65,10 +71,10 @@ namespace Centralized_Lost_Found.ViewModels
 		partial void OnSelectedLocationChanged(string location)
 		{
 			// No Location selected
-			if(string.IsNullOrWhiteSpace(location) || location == "All Locations")
+			if (string.IsNullOrWhiteSpace(location) || location == "All Locations")
 			{
 				ShowFilteredItems(_allItems); // Display all items normally
-				return; 
+				return;
 			}
 
 			// Location selected (now get filtered items and remove non-matching locations)
@@ -79,14 +85,59 @@ namespace Centralized_Lost_Found.ViewModels
 
 
 
+		// Load user details for page
+		[RelayCommand]
+		public async Task LoadUserHeaderAsync()
+		{
+			try
+			{
+				// Check if there is a logged-in user
+				if (LocalDBService.CurrentUser != null)
+				{
+					// Check if Email exists
+					if (string.IsNullOrWhiteSpace(LocalDBService.CurrentUser.Email))
+					{
+						Username = "Guest";  // No email then user is a guest
+					}
+					else
+					{
+						Username = LocalDBService.CurrentUser.Email;  // Use email on user object
+					}
+
+					// Check if Avatar exists
+					if (string.IsNullOrWhiteSpace(LocalDBService.CurrentUser.Avatar))
+					{
+						Avatar = "profile_placeholder.png";
+					}
+					else
+					{
+						Avatar = LocalDBService.CurrentUser.Avatar;
+					}
+				}
+				else
+				{
+					// No user is logged in, fallback defaults
+					Username = "Guest";
+					Avatar = "profile_placeholder.png";
+				}
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", $"Failed to load user header: {ex.Message}", "OK");
+			}
+		}
+
+
+
+
 		// Refresh items command
 		[RelayCommand]
 		public async Task RefreshAsync()
 		{
 
 			// Check if currently being refresh
-			if (IsRefreshing) 
-			{ 
+			if (IsRefreshing)
+			{
 				// Stop if refreshing
 				return;
 			}
@@ -123,7 +174,7 @@ namespace Centralized_Lost_Found.ViewModels
 				// Currently display alert to handle any issues
 				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
 			}
-			finally 
+			finally
 			{
 				IsRefreshing = false;
 			}
@@ -147,28 +198,50 @@ namespace Centralized_Lost_Found.ViewModels
 
 		// Command to navigate to AddItem page
 		[RelayCommand]
-		private async Task GoToAddItemPageAsync() 
+		private async Task GoToAddItemPageAsync()
 		{
+			// Check if user logged in and is terminated (3+ warnings)
+			if (LocalDBService.CurrentUser?.AccountTerminated == true)
+			{
+				// Prevent user from posting new lost items
+				await Application.Current.MainPage.DisplayAlert(
+					"Restricted",
+					"You cannot post new items because your account has been restricted.",
+					"OK"
+				);
+				return;
+			}
+
+			// Continue to adding new lost item (if valid user)
 			await Navigation.PushAsync(new Views.AddItem());
 		}
 
 
 		// Command to navigate to UserProfile
 		[RelayCommand]
-		private async Task GoToUserProfilePageAsync() 
+		private async Task GoToUserProfilePageAsync()
 		{
-			// Ensure can navigate first
-			if(Navigation == null)
+
+			// Ensure mainpage navigation is set.
+			if (Navigation == null)
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", "Navigation not set", "OK");
 				return;
 			}
 
-
-			// Navigate
-			await Navigation.PushAsync(new Views.UserSignUpPage());
+			// Check if user is logged in
+			if (LocalDBService.CurrentUser == null)
+			{
+				// No user logged in — go to Signup Page!
+				await Navigation.PushAsync(new Views.UserSignUpPage());
+			}
+			else
+			{
+				// User logged in — go to Profile Page!
+				await Navigation.PushAsync(new Views.UserProfilePage(LocalDBService.CurrentUser));
+			}
 		}
-
 
 	}
 }
+
