@@ -29,10 +29,12 @@ namespace Centralized_Lost_Found.Views
 		{
 			base.OnAppearing();
 
-			if (_viewModel != null)
-			{
-				await _viewModel.LoadUserProfileAsync();
-			}
+			// TODO: Check if this code is still necessary vvv
+
+			//if (_viewModel != null)
+			//{
+			//	await _viewModel.LoadUserProfileAsync();
+			//}
 		}
 	}
 }
