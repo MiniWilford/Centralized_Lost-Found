@@ -1,44 +1,89 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-              x:Class="Centralized_Lost_Found.Views.InboxPage">
+<ContentPage  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+             x:Class="Centralized_Lost_Found.Views.InboxPage">  
 
-    <ScrollView>
-        <Grid RowDefinitions="Auto, Auto, Auto"
-              ColumnDefinitions="*, *, *, Auto">
+   <VerticalStackLayout Spacing="0">  
+       <!-- Header Contents -->  
+       <Grid ColumnDefinitions="*,Auto"  
+             Padding="10"  
+             VerticalOptions="Center"  
+             BackgroundColor="Transparent">  
+           <!-- Page Title -->  
+           <Label Text="Inbox"  
+                  FontSize="18"  
+                  FontAttributes="Bold"  
+                  HorizontalOptions="Start"  
+                  VerticalOptions="Center"/>  
+           <!-- Navigation + Images-->  
+           <HorizontalStackLayout Grid.Column="1"  
+                                  Spacing="8"  
+                                  HorizontalOptions="End"  
+                                  VerticalOptions="Center">  
 
+               <Label Text="Inbox(1)" FontSize="12" VerticalOptions="Center"/>  
 
+               <Image Source="inbox_icon.png"  
+                      WidthRequest="18" HeightRequest="18"  
+                      VerticalOptions="Center"/>  
 
-            <Label Text="Topic"
-                   FontAttributes="Bold"
-                   BackgroundColor="LightGray"
-                   Padding="10"
-                   Grid.Row="0"
-                   Grid.Column="0"/>
-            <Label Text="User"
-                   FontAttributes="Bold"
-                   BackgroundColor="LightGray"
-                   Padding="10"
-                   Grid.Row="0"
-                   Grid.Column="1"/>
-            <Label Text="Location"
-                   FontAttributes="Bold"
-                   BackgroundColor="LightGray"
-                   Padding="10"
-                   Grid.Row="0"
-                   Grid.Column="2"/>
-            <Label Text="Found?"
-                   FontAttributes="Bold"
-                   BackgroundColor="LightGray"
-				   HorizontalTextAlignment="Center"
-                   Padding="10"
-                   Grid.Row="0"
-                   Grid.Column="3"/>
+               <!-- Username (clickable) -->  
+               <Button Text="{Binding Username}"  
+                       FontSize="12"  
+                       TextColor="LightYellow"  
+                       BackgroundColor="Transparent"  
+                       Padding="0"  
+                       BorderWidth="0"  
+                       Command="{Binding GoToUserProfilePageCommand}"  
+                       VerticalOptions="Center"/>
+                <Image Source="{Binding Avatar}"  
+                      WidthRequest="24"  
+                      HeightRequest="24"  
+                      VerticalOptions="Center"/>
+               
 
+            </HorizontalStackLayout>  
+       </Grid>
 
-            
-
-        </Grid>
-    </ScrollView>
-
+        <!-- Main Page Content -->
+        <VerticalStackLayout Padding="10">
+            <Grid Padding="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!--Header Row-->
+                <Label Text="Topic" Grid.Row="0" Grid.Column="0" FontAttributes="Bold" />
+                <Label Text="User" Grid.Row="0" Grid.Column="1" FontAttributes="Bold" />
+                <Label Text="Location" Grid.Row="0" Grid.Column="2" FontAttributes="Bold" />
+                <Label Text="Found?" Grid.Row="0" Grid.Column="3" FontAttributes="Bold" />
+                <CollectionView Itemsource ="{Binding Messages}"></CollectionView>
+                <CollectionView.ItemsLayout>
+                    
+                    <GridItemsLayout Orientation="Vertical" Span="1" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Label Text="{Binding Topic}" Grid.Row="0" Grid.Column="0" />
+                                                       
+                            <Label Text="{Binding User}" Grid.Row="0" Grid.Column="1" />
+                                                       
+                            <Label Text="{Binding Location}" Grid.Row="0" Grid.Column="2" />
+                                                       
+                            <Label Text="{Binding Found}" Grid.Row="0" Grid.Column="3" BackgroundColor="{Binding FoundColor}" />
+                         </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </Grid>
+        </VerticalStackLayout>
+    </VerticalStackLayout>  
 </ContentPage>
