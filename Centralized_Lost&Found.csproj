@@ -80,6 +80,9 @@
 	  <MauiXaml Update="Views\AddItem.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\InboxPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\ItemProfile.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
