@@ -1,12 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              x:Class="Centralized_Lost_Found.Views.InboxPage">
 
-namespace Centralized_Lost_Found.Views
-{
-class InboxPage
-{
-}
-}
+    <ScrollView>
+        <Grid RowDefinitions="Auto, Auto, Auto"
+              ColumnDefinitions="*, *, *, Auto">
+
+
+
+            <Label Text="Topic"
+                   FontAttributes="Bold"
+                   BackgroundColor="LightGray"
+                   Padding="10"
+                   Grid.Row="0"
+                   Grid.Column="0"/>
+            <Label Text="User"
+                   FontAttributes="Bold"
+                   BackgroundColor="LightGray"
+                   Padding="10"
+                   Grid.Row="0"
+                   Grid.Column="1"/>
+            <Label Text="Location"
+                   FontAttributes="Bold"
+                   BackgroundColor="LightGray"
+                   Padding="10"
+                   Grid.Row="0"
+                   Grid.Column="2"/>
+            <Label Text="Found?"
+                   FontAttributes="Bold"
+                   BackgroundColor="LightGray"
+				   HorizontalTextAlignment="Center"
+                   Padding="10"
+                   Grid.Row="0"
+                   Grid.Column="3"/>
+
+
+            
+
+        </Grid>
+    </ScrollView>
+
+</ContentPage>
