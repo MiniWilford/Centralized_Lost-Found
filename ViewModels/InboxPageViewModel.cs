@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 
 using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 
 namespace Centralized_Lost_Found.ViewModels
 {
-    public class InboxPageViewModel : BaseViewModel
+    public class InboxPageViewModel : ObservableObject
     {
         private readonly LocalDBService _dbService;
         internal INavigation Navigation;

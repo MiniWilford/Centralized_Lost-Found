@@ -65,24 +65,21 @@
                 <Label Text="User" Grid.Row="0" Grid.Column="1" FontAttributes="Bold" />
                 <Label Text="Location" Grid.Row="0" Grid.Column="2" FontAttributes="Bold" />
                 <Label Text="Found?" Grid.Row="0" Grid.Column="3" FontAttributes="Bold" />
-                <CollectionView Itemsource ="{Binding Messages}"></CollectionView>
-                <CollectionView.ItemsLayout>
-                    
-                    <GridItemsLayout Orientation="Vertical" Span="1" />
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Label Text="{Binding Topic}" Grid.Row="0" Grid.Column="0" />
-                                                       
-                            <Label Text="{Binding User}" Grid.Row="0" Grid.Column="1" />
-                                                       
-                            <Label Text="{Binding Location}" Grid.Row="0" Grid.Column="2" />
-                                                       
-                            <Label Text="{Binding Found}" Grid.Row="0" Grid.Column="3" BackgroundColor="{Binding FoundColor}" />
-                         </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
+                <CollectionView ItemsSource="{Binding Messages}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="1" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="*,*,*,*">
+                                <Label Text="{Binding Topic}" Grid.Column="0" />
+                                <Label Text="{Binding User}" Grid.Column="1" />
+                                <Label Text="{Binding Location}" Grid.Column="2" />
+                                <Label Text="{Binding Found}" Grid.Column="3" BackgroundColor="{Binding FoundColor}" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </Grid>
         </VerticalStackLayout>
     </VerticalStackLayout>  

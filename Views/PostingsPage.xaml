@@ -28,7 +28,14 @@
                                    VerticalOptions="Center">
 
                 <!-- Inbox -->
-                <Label Text="Inbox(1)" FontSize="12" VerticalOptions="Center"/>
+                <Button Text="Inbox"
+                       FontSize="12"
+                       TextColor="Black"
+                       BackgroundColor="Transparent"
+                       Padding="0"
+                       BorderWidth="0"
+                       Command="{Binding GoToInboxPageCommand}"
+                       VerticalOptions="Center"/>
 
                 <!-- Inbox Icon -->
                 <Image Source="inbox_icon.png"
@@ -38,7 +45,7 @@
                 <!-- Username (clickable) -->
                 <Button Text="{Binding Username}"
                         FontSize="12"
-                        TextColor="LightYellow"
+                        TextColor="Black"
                         BackgroundColor="Transparent"
                         Padding="0"
                         BorderWidth="0"
