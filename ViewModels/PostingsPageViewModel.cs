@@ -242,6 +242,31 @@ namespace Centralized_Lost_Found.ViewModels
 			}
 		}
 
-	}
+        // Command to navigate to UserProfile
+        [RelayCommand]
+        private async Task GoToInboxPageAsync()
+        {
+
+            // Ensure mainpage navigation is set.
+            if (Navigation == null)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Navigation not set", "OK");
+                return;
+            }
+
+            // Check if user is logged in
+            if (LocalDBService.CurrentUser == null)
+            {
+                // No user logged in — go to Signup Page!
+                await Navigation.PushAsync(new Views.UserSignUpPage());
+            }
+            else
+            {
+                // User logged in — go to Profile Page!
+                await Navigation.PushAsync(new Views.InboxPage());
+            }
+        }
+
+    }
 }
 

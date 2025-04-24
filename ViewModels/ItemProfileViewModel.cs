@@ -29,6 +29,7 @@ namespace Centralized_Lost_Found.ViewModels
 				if (CurrentItem != null)
 				{
 					CurrentItem.IsFound = true;
+					CurrentItem.FoundColor = "Green";
 
 					// Track who found it
 					if (LocalDBService.CurrentUser != null)

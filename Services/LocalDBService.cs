@@ -25,7 +25,8 @@ namespace Centralized_Lost_Found.Services
 
             _connection.CreateTableAsync<Item>();
 
-            
+            //_connection.CreateTableAsync<InboxMessage>();
+
         }
 
         // 
