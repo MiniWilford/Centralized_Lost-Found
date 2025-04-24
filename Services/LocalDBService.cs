@@ -25,7 +25,7 @@ namespace Centralized_Lost_Found.Services
 
             _connection.CreateTableAsync<Item>();
 
-            _connection.CreateTableAsync<InboxMessage>();
+            //_connection.CreateTableAsync<InboxMessage>();
 
         }
 
@@ -95,28 +95,6 @@ namespace Centralized_Lost_Found.Services
         public async Task DeleteItemAsync(Item item)
         {
             await _connection.DeleteAsync(item);
-        }
-
-        // Inbox message CRUD
-
-        public async Task CreateInboxMessageAsync(InboxMessage message)
-        {
-            await _connection.InsertAsync(message);
-        }
-
-        public async Task<List<InboxMessage>> GetInboxMessagesAsync()
-        {
-            return await _connection.Table<InboxMessage>().ToListAsync();
-        }
-
-        public async Task UpdateInboxMessageAsync(InboxMessage message)
-        {
-            await _connection.UpdateAsync(message);
-        }
-
-        public async Task DeleteItemAsync(InboxMessage message)
-        {
-            await _connection.DeleteAsync(message);
         }
 
 

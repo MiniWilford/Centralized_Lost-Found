@@ -21,5 +21,6 @@ namespace Centralized_Lost_Found.Models
 		public string Uploader { get; set; }
 
 		public string FoundByUser { get; set; }
+		public string FoundColor { get; set; }
 	}
 }

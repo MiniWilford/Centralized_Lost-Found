@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"  
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewModels="clr-namespace:Centralized_Lost_Found.ViewModels"
              x:Class="Centralized_Lost_Found.Views.InboxPage">  
 
    <VerticalStackLayout Spacing="0">  
@@ -19,24 +20,19 @@
            <HorizontalStackLayout Grid.Column="1"  
                                   Spacing="8"  
                                   HorizontalOptions="End"  
-                                  VerticalOptions="Center">  
-
-               <Label Text="Inbox(1)" FontSize="12" VerticalOptions="Center"/>  
-
-               <Image Source="inbox_icon.png"  
-                      WidthRequest="18" HeightRequest="18"  
-                      VerticalOptions="Center"/>  
+                                  VerticalOptions="Center">   
 
                <!-- Username (clickable) -->  
                <Button Text="{Binding Username}"  
                        FontSize="12"  
-                       TextColor="LightYellow"  
+                       TextColor="Black"  
                        BackgroundColor="Transparent"  
                        Padding="0"  
                        BorderWidth="0"  
                        Command="{Binding GoToUserProfilePageCommand}"  
                        VerticalOptions="Center"/>
-                <Image Source="{Binding Avatar}"  
+               
+               <Image Source="{Binding Avatar}"  
                       WidthRequest="24"  
                       HeightRequest="24"  
                       VerticalOptions="Center"/>
@@ -46,41 +42,31 @@
        </Grid>
 
         <!-- Main Page Content -->
-        <VerticalStackLayout Padding="10">
-            <Grid Padding="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <!--Header Row-->
-                <Label Text="Topic" Grid.Row="0" Grid.Column="0" FontAttributes="Bold" />
-                <Label Text="User" Grid.Row="0" Grid.Column="1" FontAttributes="Bold" />
-                <Label Text="Location" Grid.Row="0" Grid.Column="2" FontAttributes="Bold" />
-                <Label Text="Found?" Grid.Row="0" Grid.Column="3" FontAttributes="Bold" />
-                <CollectionView ItemsSource="{Binding Messages}">
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" Span="1" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid ColumnDefinitions="*,*,*,*">
-                                <Label Text="{Binding Topic}" Grid.Column="0" />
-                                <Label Text="{Binding User}" Grid.Column="1" />
-                                <Label Text="{Binding Location}" Grid.Column="2" />
-                                <Label Text="{Binding Found}" Grid.Column="3" BackgroundColor="{Binding FoundColor}" />
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+        <VerticalStackLayout Padding="10" Spacing="10">
+            <!-- Header Grid -->
+            <Grid ColumnDefinitions="*,*,*,*" Padding="10">
+                <Label Text="Topic" Grid.Column="0" FontAttributes="Bold" />
+                <Label Text="User" Grid.Column="1" FontAttributes="Bold" />
+                <Label Text="Location" Grid.Column="2" FontAttributes="Bold" />
+                <Label Text="Found?" Grid.Column="3" FontAttributes="Bold" />
             </Grid>
+
+            <!-- Data Rows -->
+            <CollectionView ItemsSource="{Binding Messages}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="*,*,*,*" Padding="10">
+                            <Label Text="{Binding Name}" Grid.Column="0" />
+                            <Label Text="{Binding Uploader}" Grid.Column="1" />
+                            <Label Text="{Binding Location}" Grid.Column="2" />
+                            <Label Text="{Binding IsFound}" Grid.Column="3" BackgroundColor="{Binding FoundColor}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </VerticalStackLayout>
     </VerticalStackLayout>  
 </ContentPage>

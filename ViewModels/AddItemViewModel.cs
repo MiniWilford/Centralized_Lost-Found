@@ -97,11 +97,22 @@ namespace Centralized_Lost_Found.ViewModels
 				LastSeenDate = LastSeenDate,
 				Picture = ImagePath,
 				IsFound = false,
-				Uploader = nameToDisplay
+				Uploader = nameToDisplay,
+				FoundColor = "Red"
 			};
+
+			//var newMessage = new InboxMessage
+			//{
+			//	Item = ItemName,
+			//	User = nameToDisplay,
+			//	Location = Location,
+			//	Found = false,
+			//	FoundColor = "Red"
+			//};
 
 			// Save to DB.
 			await _dbService.CreateItemAsync(newItem);
+			//await _dbService.CreateInboxMessageAsync(newMessage);
 
 			// Show success message.
 			await Application.Current.MainPage.DisplayAlert(
